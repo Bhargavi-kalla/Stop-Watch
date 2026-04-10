@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stopwatch</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+    }
+
+    .stopwatch {
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      min-width: 320px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #222;
+    }
+
+    .time {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 25px;
+      color: #111;
+      letter-spacing: 2px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #startBtn {
+      background: #28a745;
+    }
+
+    #pauseBtn {
+      background: #dc3545;
+    }
+
+    #resetBtn {
+      background: #007bff;
+    }
+
+    button:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="stopwatch">
+    <h1>Stopwatch</h1>
+    <div class="time">
+      <span id="hours">00</span>:
+      <span id="minutes">00</span>:
+      <span id="seconds">00</span>:
+      <span id="milliseconds">00</span>
+    </div>
+    <div class="buttons">
+      <button id="startBtn">Start</button>
+      <button id="pauseBtn">Pause</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+    let milliseconds = 0;
+    let timer = null;
+
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+    const millisecondsEl = document.getElementById("milliseconds");
+
+    const startBtn = document.getElementById("startBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function updateDisplay() {
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
+      millisecondsEl.textContent = String(milliseconds).padStart(2, "0");
+    }
+
+    function startStopwatch() {
+      if (timer !== null) return;
+
+      timer = setInterval(() => {
+        milliseconds++;
+        if (milliseconds === 100) {
+          milliseconds = 0;
+          seconds++;
+        }
+        if (seconds === 60) {
+          seconds = 0;
+          minutes++;
+        }
+        if (minutes === 60) {
+          minutes = 0;
+          hours++;
+        }
+        updateDisplay();
+      }, 10);
+    }
+
+    function pauseStopwatch() {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    function resetStopwatch() {
+      clearInterval(timer);
+      timer = null;
+      hours = 0;
+      minutes = 0;
+      seconds = 0;
+      milliseconds = 0;
+      updateDisplay();
+    }
+
+    startBtn.addEventListener("click", startStopwatch);
+    pauseBtn.addEventListener("click", pauseStopwatch);
+    resetBtn.addEventListener("click", resetStopwatch);
+
+    updateDisplay();
+  </script>
+</body>
+</html>
